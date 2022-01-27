@@ -1,14 +1,14 @@
 package com.example.taskandroid
 
-import android.graphics.Bitmap
+import android.net.Uri
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
 @Entity(tableName = TABLE_NAME)
 data class ImageEntity(
-    @ColumnInfo(name = "bitmap") val bitmap: Bitmap,
+    @ColumnInfo(name = "uri") val uri: Uri,
     @PrimaryKey val id: String
 ) {
-    fun toImage() = Image(bitmap)
+    fun toImage() = Image(uri)
 }

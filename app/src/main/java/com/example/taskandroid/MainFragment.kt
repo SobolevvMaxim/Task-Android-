@@ -27,10 +27,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             viewModel.value.loadImageToBase(
                 Image(
-                    bitmap = MediaStore.Images.Media.getBitmap(
-                        requireContext().contentResolver,
-                        uri
-                    )
+                    uri
                 )
             )
         }
