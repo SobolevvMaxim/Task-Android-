@@ -1,6 +1,5 @@
 package com.example.taskandroid
 
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,13 +9,20 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.recycler_item.view.*
 
-class PhotosAdapter: ListAdapter<ImageItem, PhotosAdapter.ViewHolder>(DiffCallback()) {
+class PhotosAdapter(private val listener: RecyclerOnClickListener) :
+    ListAdapter<ImageItem, PhotosAdapter.ViewHolder>(DiffCallback()) {
 
-    class ViewHolder(view: View): RecyclerView.ViewHolder(view){
+    class ViewHolder(view: View) :
+        RecyclerView.ViewHolder(view) {
         private val image: ImageButton = view.imageButton
 
-        fun bind(item: ImageItem) = with(itemView) {
-            image.setImageURI(item.uri)
+        fun bind(item: ImageItem, listener: RecyclerOnClickListener) {
+            with(itemView) {
+                image.setImageURI(item.uri)
+                setOnClickListener {
+                    listener.clickListener(item)
+                }
+            }
         }
     }
 
@@ -27,9 +33,13 @@ class PhotosAdapter: ListAdapter<ImageItem, PhotosAdapter.ViewHolder>(DiffCallba
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), listener = listener)
     }
 }
+
+class RecyclerOnClickListener(
+    val clickListener: (chosenImage: ImageItem) -> Unit
+)
 
 class DiffCallback : DiffUtil.ItemCallback<ImageItem>() {
     override fun areItemsTheSame(oldItem: ImageItem, newItem: ImageItem): Boolean {
