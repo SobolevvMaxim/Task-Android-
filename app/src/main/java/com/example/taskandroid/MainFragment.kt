@@ -1,7 +1,9 @@
 package com.example.taskandroid
 
 import android.os.Bundle
+import android.util.Log
 import android.view.View
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -22,7 +24,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
 
     private val getPhoto =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            photosAdapter.submitList(listOf(ImageItem(uri), ImageItem(uri), ImageItem(uri)))
+            viewModel.value.loadPhotoToBase(ImageItem(uri))
         }
 
     private val viewModel = viewModels<MainViewModel>()
@@ -31,9 +33,22 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
 
+        viewModel.value.photosLiveData.observe(viewLifecycleOwner) { images ->
+            updateRecyclerView(images)
+        }
+
+        viewModel.value.errorLiveData.observe(viewLifecycleOwner) { error ->
+            Log.d("ERROR", error)
+            Toast.makeText(context, "Error:$error", Toast.LENGTH_LONG).show()
+        }
+
         add_button.setOnClickListener {
             getPhoto.launch("image/*")
         }
+    }
+
+    private fun updateRecyclerView(images: List<ImageItem>?) {
+        photosAdapter.submitList(images)
     }
 
     private fun setRecyclerView() {
