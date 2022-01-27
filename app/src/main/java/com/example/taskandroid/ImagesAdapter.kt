@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.recycler_item.view.*
 
 class PhotosAdapter(private val listener: RecyclerOnClickListener) :
-    ListAdapter<ImageItem, PhotosAdapter.ViewHolder>(DiffCallback()) {
+    ListAdapter<Image, PhotosAdapter.ViewHolder>(DiffCallback()) {
 
     class ViewHolder(view: View) :
         RecyclerView.ViewHolder(view) {
         private val image: ImageButton = view.imageButton
 
-        fun bind(item: ImageItem, listener: RecyclerOnClickListener) {
+        fun bind(item: Image, listener: RecyclerOnClickListener) {
             with(itemView) {
                 image.setImageURI(item.uri)
                 setOnClickListener {
@@ -38,15 +38,15 @@ class PhotosAdapter(private val listener: RecyclerOnClickListener) :
 }
 
 class RecyclerOnClickListener(
-    val clickListener: (chosenImage: ImageItem) -> Unit
+    val clickListener: (chosenImage: Image) -> Unit
 )
 
-class DiffCallback : DiffUtil.ItemCallback<ImageItem>() {
-    override fun areItemsTheSame(oldItem: ImageItem, newItem: ImageItem): Boolean {
-        return oldItem.uri == newItem.uri
+class DiffCallback : DiffUtil.ItemCallback<Image>() {
+    override fun areItemsTheSame(old: Image, aNew: Image): Boolean {
+        return old.uri == aNew.uri
     }
 
-    override fun areContentsTheSame(oldItem: ImageItem, newItem: ImageItem): Boolean {
-        return oldItem == newItem
+    override fun areContentsTheSame(old: Image, aNew: Image): Boolean {
+        return old == aNew
     }
 }

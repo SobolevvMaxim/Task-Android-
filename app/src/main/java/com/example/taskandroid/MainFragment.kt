@@ -24,7 +24,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
 
     private val getPhoto =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            viewModel.value.loadPhotoToBase(ImageItem(uri))
+            viewModel.value.loadImageToBase(Image(uri))
         }
 
     private val viewModel = viewModels<MainViewModel>()
@@ -47,7 +47,7 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         }
     }
 
-    private fun updateRecyclerView(images: List<ImageItem>?) {
+    private fun updateRecyclerView(images: List<Image>?) {
         photosAdapter.submitList(images)
     }
 
