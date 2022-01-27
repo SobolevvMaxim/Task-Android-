@@ -1,8 +1,5 @@
 package com.example.taskandroid
 
-import android.R.attr.data
-import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -34,26 +31,6 @@ class MainFragment : Fragment(R.layout.main_fragment) {
             )
         }
 
-//    private val imageLauncher =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == Activity.RESULT_OK) {
-//                val data: Intent? = result.data
-//                val flags = data?.flags?.and(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//                val resolver = activity?.contentResolver
-//
-//            }
-//        }
-
-//    private val getPhotos =
-//        registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { result ->
-//            if (result.resultCode == Activity.RESULT_OK) {
-//                val data = result.data
-//                // TODO: maybe select multiple images from gallery
-//            }
-//        }
-
-    private val takeFrags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
-
     private val viewModel = viewModels<MainViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -75,7 +52,6 @@ class MainFragment : Fragment(R.layout.main_fragment) {
 
         add_button.setOnClickListener {
             getPhoto.launch("image/*")
-//            getMultiplyImages()
         }
     }
 
@@ -96,22 +72,4 @@ class MainFragment : Fragment(R.layout.main_fragment) {
 
         userRecycle.adapter = photosAdapter
     }
-
-//    fun getImages(images: List<Image>) {
-//        val intent = Intent(Intent.ACTION_GET_CONTENT).apply {
-//            putExtra(Intent.EXTRA_LOCAL_ONLY, true)
-//            addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-//            type = "image/*"
-//        }
-//        imageLauncher.launch(intent)
-//    }
-//
-//    fun getMultiplyImages() {
-//        Intent().apply {
-//            type = "image/*"
-//            putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true)
-//            action = Intent.ACTION_GET_CONTENT
-//            getPhotos.launch(this)
-//        }
-//    }
 }
