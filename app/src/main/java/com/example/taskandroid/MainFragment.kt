@@ -1,16 +1,20 @@
 package com.example.taskandroid
 
+import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import kotlinx.android.synthetic.main.main_fragment.*
+import java.util.*
 
 class MainFragment : Fragment(R.layout.main_fragment) {
     companion object {
@@ -26,11 +30,11 @@ class MainFragment : Fragment(R.layout.main_fragment) {
     private val getPhoto =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
             viewModel.value.loadImageToBase(
-                Image(
-                    uri
-                )
+                Image(id = UUID.randomUUID().toString(), uri)
             )
         }
+
+    private val takeFrags: Int = Intent.FLAG_GRANT_READ_URI_PERMISSION
 
     private val viewModel = viewModels<MainViewModel>()
 
@@ -56,8 +60,12 @@ class MainFragment : Fragment(R.layout.main_fragment) {
         }
     }
 
-    private fun updateRecyclerView(images: List<Image>?) {
-        photosAdapter.submitList(images)
+    private fun updateRecyclerView(images: List<Image>) {
+        context?.contentResolver?.apply {
+            takePersistableUriPermission(images[0].uri, takeFrags)
+
+            photosAdapter.submitList(images.map { it.toImageItem(this) })
+        }
     }
 
     private fun setRecyclerView() {

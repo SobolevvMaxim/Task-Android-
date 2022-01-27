@@ -10,5 +10,5 @@ data class ImageEntity(
     @ColumnInfo(name = "uri") val uri: Uri,
     @PrimaryKey val id: String
 ) {
-    fun toImage() = Image(uri)
+    fun toImage() = Image(id, uri)
 }

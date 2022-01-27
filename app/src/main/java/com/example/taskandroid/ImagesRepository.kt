@@ -12,7 +12,7 @@ class ImagesRepository(
 
     suspend fun writeImageToBase(image: Image): List<Image> {
         withContext(dispatcher) {
-            imagesDao.insert(image.toImageEntity(id = UUID.randomUUID().toString()))
+            imagesDao.insert(image.toImageEntity())
             insertInMemory(image)
         }
 
