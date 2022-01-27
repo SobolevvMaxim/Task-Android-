@@ -18,7 +18,7 @@ class PhotosAdapter(private val listener: RecyclerOnClickListener) :
 
         fun bind(item: Image, listener: RecyclerOnClickListener) {
             with(itemView) {
-                image.setImageURI(item.uri)
+                image.setImageBitmap(item.bitmap)
                 setOnClickListener {
                     listener.clickListener(item)
                 }
@@ -43,7 +43,7 @@ class RecyclerOnClickListener(
 
 class DiffCallback : DiffUtil.ItemCallback<Image>() {
     override fun areItemsTheSame(old: Image, aNew: Image): Boolean {
-        return old.uri == aNew.uri
+        return old.bitmap == aNew.bitmap
     }
 
     override fun areContentsTheSame(old: Image, aNew: Image): Boolean {

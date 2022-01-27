@@ -8,22 +8,31 @@ class ImagesRepository(
     private val imagesDao: ImagesDao,
     private val dispatcher: CoroutineDispatcher
 ) {
-    private var addedImages: List<ImageEntity>? = null
+    private var addedImages: List<Image>? = null
 
     suspend fun writeImageToBase(image: Image): List<Image> {
         withContext(dispatcher) {
-            val imageEntity = image.toImageEntity(UUID.randomUUID().toString())
-            imagesDao.insert(imageEntity)
-            insertInMemory(imageEntity)
+            imagesDao.insert(image.toImageEntity(id = UUID.randomUUID().toString()))
+            insertInMemory(image)
         }
 
-        return addedImages?.map { it.toImage() } ?: emptyList()
+        return addedImages ?: emptyList()
     }
 
-    private fun insertInMemory(image: ImageEntity) {
+    private fun insertInMemory(image: Image) {
         addedImages = addedImages?.toMutableList()?.let { photos ->
             photos.add(image)
             photos
         } ?: listOf(image)
+    }
+
+    suspend fun getAll(): List<Image> {
+        if (addedImages == null) {
+            addedImages = withContext(dispatcher) {
+                imagesDao.getAll().map { it.toImage() }
+            }
+        }
+
+        return addedImages ?: emptyList()
     }
 }

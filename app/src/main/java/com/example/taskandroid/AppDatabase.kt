@@ -7,8 +7,8 @@ import androidx.room.TypeConverters
 const val TABLE_NAME = "PHOTOS_TABLE"
 
 @Database(entities = [ImageEntity::class], version = 1)
-@TypeConverters(UriConverter::class)
-abstract class AppDatabase: RoomDatabase() {
+@TypeConverters(ImageTypeConverter::class)
+abstract class AppDatabase : RoomDatabase() {
 
     abstract fun citiesDao(): ImagesDao
 }

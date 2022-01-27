@@ -1,7 +1,7 @@
 package com.example.taskandroid
 
-import android.net.Uri
+import android.graphics.Bitmap
 
-data class Image(val uri: Uri) {
-    fun toImageEntity(id: String) = ImageEntity(uri, id)
+data class Image(val bitmap: Bitmap) {
+    fun toImageEntity(id: String) = ImageEntity(bitmap, id)
 }

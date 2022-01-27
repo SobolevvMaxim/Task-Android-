@@ -1,6 +1,7 @@
 package com.example.taskandroid
 
 import android.os.Bundle
+import android.provider.MediaStore
 import android.util.Log
 import android.view.View
 import android.widget.Toast
@@ -24,7 +25,14 @@ class MainFragment : Fragment(R.layout.main_fragment) {
 
     private val getPhoto =
         registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
-            viewModel.value.loadImageToBase(Image(uri))
+            viewModel.value.loadImageToBase(
+                Image(
+                    bitmap = MediaStore.Images.Media.getBitmap(
+                        requireContext().contentResolver,
+                        uri
+                    )
+                )
+            )
         }
 
     private val viewModel = viewModels<MainViewModel>()
@@ -32,6 +40,10 @@ class MainFragment : Fragment(R.layout.main_fragment) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setRecyclerView()
+
+        if (savedInstanceState == null) {
+            viewModel.value.loadImagesFromBase()
+        }
 
         viewModel.value.photosLiveData.observe(viewLifecycleOwner) { images ->
             updateRecyclerView(images)

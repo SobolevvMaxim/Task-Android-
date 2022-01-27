@@ -3,7 +3,7 @@ package com.example.taskandroid
 import android.app.Application
 import androidx.room.Room
 
-class App: Application() {
+class App : Application() {
 
     override fun onCreate() {
         super.onCreate()

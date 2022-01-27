@@ -26,4 +26,10 @@ class MainViewModel(
             _photosLiveData.postValue(repository.writeImageToBase(image))
         }
     }
+
+    fun loadImagesFromBase() {
+        viewModelScope.launch(exceptionHandler) {
+            _photosLiveData.postValue(repository.getAll())
+        }
+    }
 }

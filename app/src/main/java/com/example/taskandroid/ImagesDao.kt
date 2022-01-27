@@ -1,5 +1,6 @@
 package com.example.taskandroid
 
+import android.graphics.Bitmap
 import android.net.Uri
 import androidx.room.Dao
 import androidx.room.Insert
@@ -15,6 +16,6 @@ interface ImagesDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(city: ImageEntity)
 
-    @Query("DELETE FROM $TABLE_NAME WHERE uri = :uriToDelete")
-    fun delete(uriToDelete: Uri)
+    @Query("DELETE FROM $TABLE_NAME WHERE bitmap = :bitmapOfImageToDelete")
+    fun delete(bitmapOfImageToDelete: Bitmap)
 }
