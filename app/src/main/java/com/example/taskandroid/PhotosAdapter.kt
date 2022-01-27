@@ -1,0 +1,42 @@
+package com.example.taskandroid
+
+import android.media.Image
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import android.widget.ImageButton
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
+import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.synthetic.main.recycler_item.view.*
+
+class PhotosAdapter: ListAdapter<ImageItem, PhotosAdapter.ViewHolder>(DiffCallback()) {
+
+    class ViewHolder(view: View): RecyclerView.ViewHolder(view){
+        private val image: ImageButton = view.imageButton
+
+        fun bind(item: ImageItem) = with(itemView) {
+            image.setImageURI(item.uri)
+        }
+    }
+
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val view = LayoutInflater.from(parent.context)
+            .inflate(R.layout.recycler_item, parent, false)
+        return ViewHolder(view)
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        holder.bind(getItem(position))
+    }
+}
+
+class DiffCallback : DiffUtil.ItemCallback<ImageItem>() {
+    override fun areItemsTheSame(oldItem: ImageItem, newItem: ImageItem): Boolean {
+        return oldItem.uri == newItem.uri
+    }
+
+    override fun areContentsTheSame(oldItem: ImageItem, newItem: ImageItem): Boolean {
+        return oldItem == newItem
+    }
+}
